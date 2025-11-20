@@ -413,7 +413,8 @@ export const initialState: SettingsState = {
     enabled: false,
     host: 'localhost',
     port: 23333,
-    apiKey: `cs-sk-${uuid()}`
+    apiKey: `cs-sk-${uuid()}`,
+    knowledgeBaseIds: []
   },
   showMessageOutline: false
 }
@@ -851,6 +852,12 @@ const settingsSlice = createSlice({
         apiKey: action.payload
       }
     },
+    setApiServerKnowledgeBaseIds: (state, action: PayloadAction<string[]>) => {
+      state.apiServer = {
+        ...state.apiServer,
+        knowledgeBaseIds: action.payload
+      }
+    },
     setShowMessageOutline: (state, action: PayloadAction<boolean>) => {
       state.showMessageOutline = action.payload
     }
@@ -984,7 +991,8 @@ export const {
   // API Server actions
   setApiServerEnabled,
   setApiServerPort,
-  setApiServerApiKey
+  setApiServerApiKey,
+  setApiServerKnowledgeBaseIds
 } = settingsSlice.actions
 
 export default settingsSlice.reducer

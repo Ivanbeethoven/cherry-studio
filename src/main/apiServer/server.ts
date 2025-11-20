@@ -4,6 +4,7 @@ import { loggerService } from '@logger'
 import { IpcChannel } from '@shared/IpcChannel'
 
 import { agentService } from '../services/agents'
+import { knowledgeStoreService } from '../services/KnowledgeStoreService'
 import { windowService } from '../services/WindowService'
 import { app } from './app'
 import { config } from './config'
@@ -36,6 +37,7 @@ export class ApiServer {
     logger.info('Initializing AgentService')
     await agentService.initialize()
     logger.info('AgentService initialized')
+    knowledgeStoreService.startSync()
 
     // Create server with Express app
     this.server = createServer(app)
@@ -77,6 +79,7 @@ export class ApiServer {
       this.server!.close(() => {
         logger.info('API server stopped')
         this.server = null
+        knowledgeStoreService.stopSync()
         resolve()
       })
     })

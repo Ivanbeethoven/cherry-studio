@@ -15,6 +15,7 @@ import type {
   FileUploadResponse,
   GetApiServerStatusResult,
   KnowledgeBaseParams,
+  KnowledgeBaseSyncPayload,
   KnowledgeItem,
   KnowledgeSearchResult,
   MCPServer,
@@ -273,6 +274,20 @@ const api = {
     ) => tracedInvoke(IpcChannel.KnowledgeBase_Rerank, context, { search, base, results }),
     checkQuota: ({ base, userId }: { base: KnowledgeBaseParams; userId: string }) =>
       ipcRenderer.invoke(IpcChannel.KnowledgeBase_Check_Quota, base, userId)
+  },
+  knowledgeStore: {
+    syncBases: (payload: KnowledgeBaseSyncPayload[]) =>
+      ipcRenderer.invoke(IpcChannel.KnowledgeStore_SyncBases, payload),
+    onRequestSync: (callback: () => void) => {
+      const listener = () => callback()
+      ipcRenderer.on(IpcChannel.KnowledgeStore_RequestSync, listener)
+      return () => ipcRenderer.removeListener(IpcChannel.KnowledgeStore_RequestSync, listener)
+    },
+    onStopSync: (callback: () => void) => {
+      const listener = () => callback()
+      ipcRenderer.on(IpcChannel.KnowledgeStore_StopSync, listener)
+      return () => ipcRenderer.removeListener(IpcChannel.KnowledgeStore_StopSync, listener)
+    }
   },
   memory: {
     add: (messages: string | AssistantMessage[], options?: AddMemoryOptions) =>

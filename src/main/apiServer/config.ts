@@ -32,7 +32,8 @@ class ConfigManager {
         enabled: serverSettings?.enabled ?? false,
         port: serverSettings?.port ?? defaultPort,
         host: defaultHost,
-        apiKey: apiKey
+        apiKey: apiKey,
+        knowledgeBaseIds: serverSettings?.knowledgeBaseIds ?? []
       }
       return this._config
     } catch (error: any) {
@@ -41,7 +42,8 @@ class ConfigManager {
         enabled: false,
         port: defaultPort,
         host: defaultHost,
-        apiKey: this.generateApiKey()
+        apiKey: this.generateApiKey(),
+        knowledgeBaseIds: []
       }
       return this._config
     }

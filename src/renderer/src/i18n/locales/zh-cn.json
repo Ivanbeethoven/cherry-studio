@@ -317,6 +317,12 @@
         "helpText": "停止服务器以更改端口",
         "label": "端口"
       },
+      "knowledgeBases": {
+        "label": "共享的知识库",
+        "description": "选择需要同步到 API 服务器的本地知识库，留空则共享所有知识库。",
+        "placeholder": "选择要共享的知识库",
+        "empty": "尚未创建任何知识库"
+      },
       "url": {
         "copyTooltip": "复制 URL",
         "label": "URL"
@@ -334,7 +340,8 @@
       "startSuccess": "API 服务器启动成功",
       "stopError": "停止 API 服务器失败：",
       "stopSuccess": "API 服务器停止成功",
-      "urlCopied": "服务器 URL 已复制到剪贴板"
+      "urlCopied": "服务器 URL 已复制到剪贴板",
+      "knowledgeSelectionMissing": "部分已选择的知识库已不存在，将被自动忽略：{{names}}"
     },
     "status": {
       "running": "运行中",

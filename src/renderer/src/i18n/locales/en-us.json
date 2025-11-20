@@ -317,6 +317,12 @@
         "helpText": "Stop server to change port",
         "label": "Port"
       },
+      "knowledgeBases": {
+        "label": "Shared knowledge bases",
+        "description": "Select which local knowledge bases will be synced to the API server. Leave empty to share all.",
+        "placeholder": "Choose knowledge bases to expose",
+        "empty": "No knowledge bases available yet"
+      },
       "url": {
         "copyTooltip": "Copy URL",
         "label": "URL"
@@ -334,7 +340,8 @@
       "startSuccess": "API Server started successfully",
       "stopError": "Failed to stop API Server: ",
       "stopSuccess": "API Server stopped successfully",
-      "urlCopied": "Server URL copied to clipboard"
+      "urlCopied": "Server URL copied to clipboard",
+      "knowledgeSelectionMissing": "Some selected knowledge bases are missing locally and will be ignored: {{names}}"
     },
     "status": {
       "running": "Running",

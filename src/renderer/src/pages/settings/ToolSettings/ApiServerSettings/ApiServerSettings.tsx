@@ -2,9 +2,9 @@ import { useTheme } from '@renderer/context/ThemeProvider'
 import { useApiServer } from '@renderer/hooks/useApiServer'
 import type { RootState } from '@renderer/store'
 import { useAppDispatch } from '@renderer/store'
-import { setApiServerApiKey, setApiServerPort } from '@renderer/store/settings'
+import { setApiServerApiKey, setApiServerKnowledgeBaseIds, setApiServerPort } from '@renderer/store/settings'
 import { formatErrorMessage } from '@renderer/utils/error'
-import { Alert, Button, Input, InputNumber, Tooltip, Typography } from 'antd'
+import { Alert, Button, Input, InputNumber, Select, Tooltip, Typography } from 'antd'
 import { Copy, ExternalLink, Play, RotateCcw, Square } from 'lucide-react'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -23,8 +23,14 @@ const ApiServerSettings: FC = () => {
 
   // API Server state with proper defaults
   const apiServerConfig = useSelector((state: RootState) => state.settings.apiServer)
+  const knowledgeBases = useSelector((state: RootState) => state.knowledge.bases)
   const { apiServerRunning, apiServerLoading, startApiServer, stopApiServer, restartApiServer, setApiServerEnabled } =
     useApiServer()
+
+  const selectedKnowledgeBaseIds = apiServerConfig.knowledgeBaseIds || []
+  const missingKnowledgeBaseIds = selectedKnowledgeBaseIds.filter(
+    (id) => !knowledgeBases?.some((base) => base.id === id)
+  )
 
   const handleApiServerToggle = async (enabled: boolean) => {
     try {
@@ -60,6 +66,10 @@ const ApiServerSettings: FC = () => {
     if (port >= 1000 && port <= 65535) {
       dispatch(setApiServerPort(port))
     }
+  }
+
+  const handleKnowledgeSelectionChange = (values: string[]) => {
+    dispatch(setApiServerKnowledgeBaseIds(values))
   }
 
   const openApiDocs = () => {
@@ -180,6 +190,42 @@ const ApiServerSettings: FC = () => {
             size="middle"
           />
         </AuthHeaderSection>
+      </ConfigurationField>
+
+      {/* Knowledge base selection */}
+      <ConfigurationField>
+        <FieldLabel>{t('apiServer.fields.knowledgeBases.label')}</FieldLabel>
+        <FieldDescription>{t('apiServer.fields.knowledgeBases.description')}</FieldDescription>
+        <Select
+          mode="multiple"
+          allowClear
+          showSearch
+          placeholder={
+            knowledgeBases?.length
+              ? t('apiServer.fields.knowledgeBases.placeholder')
+              : t('apiServer.fields.knowledgeBases.empty')
+          }
+          options={
+            knowledgeBases?.map((base) => ({
+              label: base.name,
+              value: base.id
+            })) ?? []
+          }
+          value={selectedKnowledgeBaseIds}
+          onChange={handleKnowledgeSelectionChange}
+          style={{ width: '100%' }}
+          disabled={!knowledgeBases || knowledgeBases.length === 0}
+          maxTagCount="responsive"
+        />
+        {missingKnowledgeBaseIds.length > 0 && (
+          <Alert
+            type="warning"
+            showIcon
+            message={t('apiServer.messages.knowledgeSelectionMissing', {
+              names: missingKnowledgeBaseIds.join(', ')
+            })}
+          />
+        )}
       </ConfigurationField>
     </Container>
   )

@@ -153,6 +153,9 @@ export enum IpcChannel {
   KnowledgeBase_Search = 'knowledge-base:search',
   KnowledgeBase_Rerank = 'knowledge-base:rerank',
   KnowledgeBase_Check_Quota = 'knowledge-base:check-quota',
+  KnowledgeStore_SyncBases = 'knowledge-store:sync-bases',
+  KnowledgeStore_RequestSync = 'knowledge-store:request-sync',
+  KnowledgeStore_StopSync = 'knowledge-store:stop-sync',
 
   //file
   File_Open = 'file:open',

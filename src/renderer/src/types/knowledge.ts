@@ -102,6 +102,32 @@ export interface KnowledgeBase {
   }
 }
 
+export type KnowledgeBaseModelInfo = Pick<Model, 'id' | 'name' | 'provider' | 'group' | 'description'>
+
+export type KnowledgeBaseSummary = Pick<
+  KnowledgeBase,
+  | 'id'
+  | 'name'
+  | 'description'
+  | 'dimensions'
+  | 'documentCount'
+  | 'chunkSize'
+  | 'chunkOverlap'
+  | 'threshold'
+  | 'created_at'
+  | 'updated_at'
+  | 'version'
+  | 'preprocessProvider'
+> & {
+  model: KnowledgeBaseModelInfo
+  rerankModel?: KnowledgeBaseModelInfo
+}
+
+export type KnowledgeBaseSyncPayload = {
+  metadata: KnowledgeBaseSummary
+  params: KnowledgeBaseParams
+}
+
 export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed'
 
 export const PreprocessProviderIds = {
